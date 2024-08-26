@@ -1,0 +1,6 @@
+npm run dev = run server
+
+- npm init -y = membuat package.json
+- npm install express
+- npm install dotenv
+- npm install mongoose
