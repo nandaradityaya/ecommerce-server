@@ -1,7 +1,7 @@
 import express from "express";
 import User from "../models/userModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
-import { registerUser } from "../controller/authController.js";
+import { registerUser, loginUser } from "../controller/authController.js";
 
 const router = express.Router();
 
@@ -9,9 +9,7 @@ const router = express.Router();
 router.post("/register", registerUser);
 
 // post /api/v1/auth/login
-router.post("/login", (req, res) => {
-  res.send("Login");
-});
+router.post("/login", loginUser);
 
 // get /api/v1/auth/logout
 router.get("/logout", (req, res) => {

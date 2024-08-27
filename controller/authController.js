@@ -9,6 +9,7 @@ const signToken = (id) => {
   });
 };
 
+// buat response token
 const createSendResToken = (user, statusCode, res) => {
   const token = signToken(user._id); // ambil token berdasarkan user idnya
 
@@ -44,4 +45,25 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   // kirim token dengan createUser, statuscode 201, dan kirim responnya
   createSendResToken(createUser, 201, res);
+});
+
+export const loginUser = asyncHandler(async (req, res) => {
+  // tahap 1 buat validasi
+  if (!req.body.email || !req.body.password) {
+    res.status(400);
+    throw new Error("Inputan email/password tidak boleh kosong");
+  }
+
+  // tahap 2 cek email ada di DB atau tidak
+  const userData = await User.findOne({
+    email: req.body.email,
+  });
+
+  // tahap 3 cek password (compare password ada di userModel.js)
+  if (userData && (await userData.comparePassword(req.body.password))) {
+    createSendResToken(userData, 200, res); // jika berhasil jalankan create token
+  } else {
+    res.status(400);
+    throw new Error("Invalid User");
+  }
 });
