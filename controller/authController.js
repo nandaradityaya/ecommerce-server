@@ -67,3 +67,29 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid User");
   }
 });
+
+export const getCurrentUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select("-password"); // ambil user berdasarkan id tapi jangan ambil passwordnya
+
+  // jika user di dapatkan
+  if (user) {
+    return res.status(200).json({
+      user,
+    });
+  } else {
+    res.status(404);
+    throw new Error("user not found");
+  }
+});
+
+export const logoutUser = async (req, res) => {
+  // ambil res cookies yg ada jwtnya lalu isi dengan kosong.
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(Date.now()), // expiresnya bikin sekarang biar abis
+  });
+
+  res.status(200).json({
+    message: "Logout Berhasil",
+  });
+};
