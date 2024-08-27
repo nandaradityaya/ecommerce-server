@@ -1,19 +1,12 @@
 import express from "express";
 import User from "../models/userModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
+import { registerUser } from "../controller/authController.js";
 
 const router = express.Router();
 
 // post /api/v1/auth/register
-router.post(
-  "/register",
-  asyncHandler(async (req, res) => {
-    // gunakan asyncHandler yg sudah dibuat
-    await User.create({
-      name: req.body.name,
-    });
-  })
-);
+router.post("/register", registerUser);
 
 // post /api/v1/auth/login
 router.post("/login", (req, res) => {

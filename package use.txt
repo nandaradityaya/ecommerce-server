@@ -1,6 +1,14 @@
 npm run dev = run server
 
+nandaradityaya
+nanda@gmail.com
+rahasia
+
 - npm init -y = membuat package.json
 - npm install express
 - npm install dotenv
 - npm install mongoose
+- npm install jsonwebtoken = untuk membuat token
+- npm install bcryptjs
+- npm install validator
+- npm install cookie-parser = untuk menyimpan token ke cookies

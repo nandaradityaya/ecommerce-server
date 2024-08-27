@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const port = 3000;
 
 //Middleware
 app.use(express.json()); // agar bisa memasukan data json di req body
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 import authRouter from "./routes/authRouter.js";
