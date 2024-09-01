@@ -34,11 +34,26 @@ export const detailProduct = asyncHandler(async (req, res) => {
 });
 
 export const updateProduct = asyncHandler(async (req, res) => {
-  res.send("Update Product");
+  const paramsId = req.params.id; // ambil nama parameternya yg ada di productRouter.js (saat ini nama paramsnya id)
+  const updateProduct = await Product.findByIdAndUpdate(paramsId, req.body, {
+    runValidators: false,
+    new: true,
+  }); // panggil model Product lalu findByIdAndUpdate menggunakan mongoose berdasarkan params yg di inputkan dan ambil request bodynya yg berisi option
+
+  return res.status(201).json({
+    message: "Berhasil Update Product",
+    data: updateProduct, // panggil datanya
+  });
 });
 
 export const deleteProduct = asyncHandler(async (req, res) => {
-  res.send("Delete Product");
+  const paramsId = req.params.id; // ambil nama parameternya yg ada di productRouter.js (saat ini nama paramsnya id)
+
+  await Product.findByIdAndDelete(paramsId); //panggil model Product lalu findByIdAndDelete menggunakan mongoose berdasarkan params yg di inputkan
+
+  return res.status(201).json({
+    message: "Berhasil Delete Product",
+  });
 });
 
 export const fileUpload = asyncHandler(async (req, res) => {
