@@ -1,5 +1,8 @@
 import express from "express";
-import { protectedMiddleware } from "../middlewares/authMiddleware.js";
+import {
+  protectedMiddleware,
+  adminMiddleware,
+} from "../middlewares/authMiddleware.js";
 import {
   createProduct,
   allProduct,
@@ -16,7 +19,7 @@ const router = express.Router();
 // Create Data Product
 // POST : /api/v1/product
 // middleware owner
-router.post("/", createProduct);
+router.post("/", protectedMiddleware, adminMiddleware, createProduct); // protect routenya dengan middleware dan adminMiddleware agar hanya admin yg bisa akses
 
 // Read Data Product
 // GET : /api/v1/product
@@ -29,12 +32,12 @@ router.get("/:id", detailProduct);
 // Update Detail Data Product
 // PUT : /api/v1/product/:id
 // middleware owner
-router.put("/:id", updateProduct);
+router.put("/:id", protectedMiddleware, adminMiddleware, updateProduct);
 
 // Read Detail Data Product
 // DELETE : /api/v1/product/:id
 // middleware owner
-router.delete("/:id", deleteProduct);
+router.delete("/:id", protectedMiddleware, adminMiddleware, deleteProduct);
 
 // File Update Data Product
 // POST : /api/v1/product/file-upload

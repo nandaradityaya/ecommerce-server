@@ -26,3 +26,14 @@ export const protectedMiddleware = asyncHandler(async (req, res, next) => {
     throw new Error("Not Authorized, no Token");
   }
 });
+
+// middleware untuk admin
+export const adminMiddleware = (req, res, next) => {
+  // jika kita dapat request usernya & user tsb adalah owner
+  if (req.user && req.user.role === "owner") {
+    next();
+  } else {
+    res.status(401); // unauthorized
+    throw new Error("Not Authorized as Owner");
+  }
+};
