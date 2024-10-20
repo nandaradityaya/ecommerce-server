@@ -11,7 +11,34 @@ export const createProduct = asyncHandler(async (req, res) => {
 });
 
 export const allProduct = asyncHandler(async (req, res) => {
-  const data = await Product.find(); // panggil model Product lalu find menggunakan mongoose
+  // Req Query
+  const queryObj = { ...req.query }; // spread operator agar querynya kita bisa request lebih dari 1
+
+  // Fungsi untuk mengabaikan jika ada req page dan limit
+  const excludeField = ["page", "limit"];
+  excludeField.forEach((element) => delete queryObj[element]); // hapus query page dan limit pada saat search query di jalankan
+
+  // console.log(queryObj);
+
+  let query = Product.find(queryObj); // find berdasarkan query params
+
+  // Pagination
+  const page = req.query.page * 1 || 1; // parsing page query ke integer atau return halaman 1
+  const limitData = req.query.limit * 1 || 30; // parsing limit query ke interger atau return sebanyak 30 data
+  const skipData = (page - 1) * limitData;
+
+  query = query.skip(skipData).limit(limitData);
+
+  // jika query page terisi
+  if (req.query.page) {
+    const numProduct = await Product.countDocuments();
+    if (skipData >= numProduct) {
+      res.status(404);
+      throw new Error("This page does not exist");
+    }
+  }
+
+  const data = await query;
 
   return res.status(200).json({
     message: "Berhasil tampil semua product",
