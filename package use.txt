@@ -12,3 +12,5 @@ rahasia
 - npm install bcryptjs
 - npm install validator
 - npm install cookie-parser = untuk menyimpan token ke cookies
+
+- npm npm install --save multer = untuk upload attachment

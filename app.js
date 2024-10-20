@@ -13,6 +13,7 @@ const port = 3000;
 app.use(express.json()); // agar bisa memasukan data json di req body
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("./public")); // function untuk bisa di akses di browser
 
 import authRouter from "./routes/authRouter.js";
 import productRouter from "./routes/productRouter.js";

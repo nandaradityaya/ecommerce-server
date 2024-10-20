@@ -11,6 +11,7 @@ import {
   deleteProduct,
   fileUpload,
 } from "../controller/productController.js";
+import { upload } from "../utils/uploadFileHandler.js";
 
 const router = express.Router();
 
@@ -42,6 +43,12 @@ router.delete("/:id", protectedMiddleware, adminMiddleware, deleteProduct);
 // File Update Data Product
 // POST : /api/v1/product/file-upload
 // middleware owner
-router.post("/file-upload", fileUpload);
+router.post(
+  "/file-upload",
+  protectedMiddleware,
+  adminMiddleware,
+  upload.single("image"), // handler untuk upload
+  fileUpload
+);
 
 export default router;
