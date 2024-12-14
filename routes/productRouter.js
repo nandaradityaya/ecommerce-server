@@ -10,7 +10,7 @@ import {
   updateProduct,
   deleteProduct,
   fileUpload,
-} from "../controller/productController.js";
+} from "../controller/ProductController.js";
 import { upload } from "../utils/uploadFileHandler.js";
 
 const router = express.Router();

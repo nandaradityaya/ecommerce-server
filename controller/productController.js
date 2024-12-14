@@ -15,12 +15,21 @@ export const allProduct = asyncHandler(async (req, res) => {
   const queryObj = { ...req.query }; // spread operator agar querynya kita bisa request lebih dari 1
 
   // Fungsi untuk mengabaikan jika ada req page dan limit
-  const excludeField = ["page", "limit"];
+  const excludeField = ["page", "limit", "name"];
   excludeField.forEach((element) => delete queryObj[element]); // hapus query page dan limit pada saat search query di jalankan
 
   // console.log(queryObj);
 
-  let query = Product.find(queryObj); // find berdasarkan query params
+  let query;
+
+  // gunakan regex agar kita bisa searching berdasarkan karakter yg di input pada query
+  if (req.query.name) {
+    query = Product.find({
+      name: { $regex: req.query.name, $options: "i" },
+    });
+  } else {
+    query = Product.find(queryObj); // find berdasarkan query params
+  }
 
   // Pagination
   const page = req.query.page * 1 || 1; // parsing page query ke integer atau return halaman 1
@@ -29,10 +38,10 @@ export const allProduct = asyncHandler(async (req, res) => {
 
   query = query.skip(skipData).limit(limitData);
 
+  let countProduct = await Product.countDocuments();
   // jika query page terisi
   if (req.query.page) {
-    const numProduct = await Product.countDocuments();
-    if (skipData >= numProduct) {
+    if (skipData >= countProduct) {
       res.status(404);
       throw new Error("This page does not exist");
     }
@@ -43,6 +52,7 @@ export const allProduct = asyncHandler(async (req, res) => {
   return res.status(200).json({
     message: "Berhasil tampil semua product",
     data: data, // panggil datanya
+    count: countProduct,
   });
 });
 

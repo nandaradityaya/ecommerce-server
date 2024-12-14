@@ -17,10 +17,12 @@ app.use(express.static("./public")); // function untuk bisa di akses di browser
 
 import authRouter from "./routes/authRouter.js";
 import productRouter from "./routes/productRouter.js";
+import orderRouter from "./routes/orderRouter.js";
 
 // Parent Router
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/product", productRouter);
+app.use("/api/v1/order", orderRouter);
 
 app.use(notFound); // munculkan jika notFound
 app.use(errorHandler); // munculkan jika error
